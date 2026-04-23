@@ -315,11 +315,7 @@ const AIDoctorSVG = () => (
         </feMerge>
       </filter>
     </defs>
-
-    {/* Background circle */}
     <circle cx="200" cy="250" r="190" fill="url(#bgGrad)" />
-
-    {/* Floating medical icons */}
     <g opacity="0.15">
       <circle cx="50" cy="100" r="25" fill="#3b82f6" />
       <text x="50" y="108" textAnchor="middle" fontSize="20" fill="white">+</text>
@@ -328,82 +324,47 @@ const AIDoctorSVG = () => (
       <circle cx="60" cy="380" r="18" fill="#1d4ed8" />
       <text x="60" y="386" textAnchor="middle" fontSize="13" fill="white">⚕</text>
     </g>
-
-    {/* Doctor body - white coat */}
     <ellipse cx="200" cy="430" rx="110" ry="80" fill="url(#coatGrad)" filter="url(#shadow)" />
-
-    {/* Coat lapels / scrubs underneath */}
     <path d="M155 310 L200 340 L245 310 L255 500 L145 500 Z" fill="#dbeafe" />
     <path d="M175 310 L200 340 L225 310" fill="none" stroke="#93c5fd" strokeWidth="1.5" />
-
-    {/* White coat */}
     <path d="M140 300 L100 320 L90 500 L165 500 L165 380 L200 400 L235 380 L235 500 L310 500 L300 320 L260 300 Z" fill="url(#coatGrad)" filter="url(#shadow)" />
-
-    {/* Coat details - buttons */}
     <circle cx="200" cy="360" r="4" fill="#93c5fd" />
     <circle cx="200" cy="385" r="4" fill="#93c5fd" />
     <circle cx="200" cy="410" r="4" fill="#93c5fd" />
-
-    {/* Stethoscope */}
     <path d="M155 320 Q140 340 145 360 Q150 380 165 385 Q185 392 190 375 Q195 358 180 350 Q165 342 160 355" fill="none" stroke="#1d4ed8" strokeWidth="4" strokeLinecap="round" />
     <circle cx="160" cy="357" r="10" fill="#1d4ed8" stroke="#3b82f6" strokeWidth="2" />
     <circle cx="160" cy="357" r="5" fill="#93c5fd" />
-    {/* Ear pieces */}
     <path d="M155 320 L148 310 M155 320 L152 308" stroke="#1d4ed8" strokeWidth="3" strokeLinecap="round" />
-
-    {/* Neck */}
     <rect x="183" y="245" width="34" height="45" rx="15" fill="url(#skinGrad)" />
-
-    {/* Head */}
     <ellipse cx="200" cy="210" rx="58" ry="68" fill="url(#skinGrad)" filter="url(#shadow)" />
-
-    {/* Hair */}
     <path d="M148 185 Q150 140 200 135 Q250 130 255 185 Q250 160 200 158 Q152 160 148 185 Z" fill="#1a1a2e" />
     <path d="M148 185 Q142 175 145 160 Q148 148 155 145" fill="none" stroke="#1a1a2e" strokeWidth="8" strokeLinecap="round" />
     <path d="M252 185 Q258 175 255 160 Q252 148 245 145" fill="none" stroke="#1a1a2e" strokeWidth="8" strokeLinecap="round" />
-
-    {/* Ears */}
     <ellipse cx="143" cy="210" rx="10" ry="14" fill="url(#skinGrad)" />
     <ellipse cx="257" cy="210" rx="10" ry="14" fill="url(#skinGrad)" />
-
-    {/* Eyes */}
     <ellipse cx="180" cy="205" rx="10" ry="11" fill="white" />
     <ellipse cx="220" cy="205" rx="10" ry="11" fill="white" />
     <circle cx="182" cy="207" r="7" fill="#1a1a2e" />
     <circle cx="222" cy="207" r="7" fill="#1a1a2e" />
     <circle cx="184" cy="204" r="2.5" fill="white" />
     <circle cx="224" cy="204" r="2.5" fill="white" />
-
-    {/* Eyebrows */}
     <path d="M170 193 Q180 188 192 192" stroke="#1a1a2e" strokeWidth="3" fill="none" strokeLinecap="round" />
     <path d="M210 192 Q220 188 232 193" stroke="#1a1a2e" strokeWidth="3" fill="none" strokeLinecap="round" />
-
-    {/* Nose */}
     <path d="M197 215 Q195 225 192 228 Q196 230 200 229 Q204 230 208 228 Q205 225 203 215 Z" fill="#E8937A" opacity="0.6" />
-
-    {/* Smile */}
     <path d="M186 242 Q200 254 214 242" stroke="#c0705a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
     <path d="M186 242 Q200 260 214 242" fill="#ff9f9f" opacity="0.4" />
-
-    {/* ID Badge */}
     <rect x="220" y="320" width="60" height="40" rx="5" fill="url(#blueGrad)" />
     <rect x="224" y="324" width="52" height="32" rx="3" fill="white" opacity="0.9" />
     <circle cx="240" cy="333" r="6" fill="#93c5fd" />
     <rect x="250" y="329" width="22" height="3" rx="1.5" fill="#1d4ed8" opacity="0.5" />
     <rect x="250" y="335" width="16" height="2" rx="1" fill="#93c5fd" opacity="0.5" />
     <text x="250" y="350" fontSize="6" fill="#1d4ed8" fontWeight="bold">MD, AIIMS</text>
-
-    {/* Tablet/clipboard in hand */}
     <rect x="100" y="340" width="50" height="65" rx="6" fill="#1e3a8a" filter="url(#shadow)" />
     <rect x="104" y="344" width="42" height="57" rx="4" fill="#dbeafe" />
-    {/* Screen content lines */}
     <rect x="108" y="350" width="34" height="2" rx="1" fill="#3b82f6" opacity="0.7" />
     <rect x="108" y="356" width="28" height="2" rx="1" fill="#3b82f6" opacity="0.5" />
     <rect x="108" y="362" width="32" height="2" rx="1" fill="#3b82f6" opacity="0.5" />
-    {/* Mini heart rate line on tablet */}
     <path d="M108 375 L114 375 L117 368 L120 382 L123 372 L126 375 L142 375" fill="none" stroke="#ef4444" strokeWidth="1.5" />
-
-    {/* Floating health stats bubble */}
     <g filter="url(#shadow)">
       <rect x="280" y="260" width="100" height="55" rx="12" fill="white" />
       <text x="290" y="280" fontSize="9" fill="#6b7280">Heart Rate</text>
@@ -411,15 +372,11 @@ const AIDoctorSVG = () => (
       <text x="316" y="298" fontSize="9" fill="#6b7280">bpm</text>
       <path d="M290 310 L298 310 L301 304 L304 316 L307 308 L310 310 L320 310" fill="none" stroke="#ef4444" strokeWidth="1.5" />
     </g>
-
-    {/* AI sparkle elements */}
     <g filter="url(#glow)">
       <circle cx="320" cy="200" r="4" fill="#60a5fa" opacity="0.8" />
       <circle cx="80" cy="250" r="3" fill="#3b82f6" opacity="0.6" />
       <circle cx="330" cy="350" r="5" fill="#93c5fd" opacity="0.7" />
     </g>
-
-    {/* Cross/Plus medical symbol - floating */}
     <g transform="translate(320, 90)" filter="url(#shadow)">
       <rect x="-18" y="-6" width="36" height="12" rx="6" fill="#ef4444" />
       <rect x="-6" y="-18" width="12" height="36" rx="6" fill="#ef4444" />
@@ -473,11 +430,12 @@ export default function Home() {
     emergency: useRef(null),
   };
 
-  useEffect(() => {
-    if (!isLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, isLoading, router]);
+useEffect(() => {
+  if (!isLoading && !user) {
+    // TEMP: don't redirect (avoid 404)
+    console.log('User not logged in');
+  }
+}, [user, isLoading]);
 
   useEffect(() => {
     const savedLang = localStorage.getItem('language') || 'en';
@@ -502,6 +460,10 @@ export default function Home() {
     sectionRefs[section]?.current?.scrollIntoView({ behavior: 'smooth' });
     setActiveSection(section);
     setMobileMenuOpen(false);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (isLoading) {
@@ -787,10 +749,10 @@ export default function Home() {
                 fontWeight: 700,
                 fontSize: '0.875rem',
               }}>
-                {user.name.charAt(0)}
+                {user?.name?.charAt(0) || 'U'}
               </Avatar>
               <Typography variant="body2" fontWeight={600} sx={{ color: 'white', display: { xs: 'none', sm: 'block' } }}>
-                {user.name}
+                {user?.name || 'Guest'}
               </Typography>
             </Box>
 
@@ -863,13 +825,9 @@ export default function Home() {
         }}
       >
         {/* Background decorations */}
-        <Box sx={{
-          position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none',
-        }}>
-          {/* Large circles */}
+        <Box sx={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
           <Box sx={{ position: 'absolute', top: -100, right: -100, width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)' }} />
           <Box sx={{ position: 'absolute', bottom: -150, left: -100, width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(239,68,68,0.08) 0%, transparent 70%)' }} />
-          {/* Grid lines */}
           <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.04 }}>
             <defs>
               <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -878,7 +836,6 @@ export default function Home() {
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
-          {/* Floating blobs */}
           <Box sx={{ position: 'absolute', top: '20%', left: '5%', width: 12, height: 12, borderRadius: '50%', bgcolor: '#60a5fa', opacity: 0.6, animation: 'float 4s ease-in-out infinite', '@keyframes float': { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } } }} />
           <Box sx={{ position: 'absolute', top: '60%', left: '8%', width: 8, height: 8, borderRadius: '50%', bgcolor: '#ef4444', opacity: 0.5, animation: 'float 5s ease-in-out infinite 1s' }} />
           <Box sx={{ position: 'absolute', top: '30%', right: '12%', width: 10, height: 10, borderRadius: '50%', bgcolor: '#93c5fd', opacity: 0.6, animation: 'float 3.5s ease-in-out infinite 0.5s' }} />
@@ -886,7 +843,6 @@ export default function Home() {
 
         <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={4} alignItems="center">
-
             {/* LEFT: Text content */}
             <Grid item xs={12} md={5}>
               <Chip
@@ -901,7 +857,6 @@ export default function Home() {
                   fontSize: '0.8rem',
                 }}
               />
-
               <Typography
                 variant="h2"
                 sx={{
@@ -915,7 +870,6 @@ export default function Home() {
               >
                 {t.tagline}
               </Typography>
-
               <Typography
                 variant="h6"
                 sx={{
@@ -928,13 +882,9 @@ export default function Home() {
               >
                 {t.description}
               </Typography>
-
-              {/* Heartbeat animation */}
               <Box sx={{ mb: 3 }}>
                 <HeartbeatLine />
               </Box>
-
-              {/* Quote card */}
               <Paper sx={{
                 p: 3,
                 mb: 4,
@@ -961,8 +911,6 @@ export default function Home() {
                   </Box>
                 </Box>
               </Paper>
-
-              {/* CTA Buttons */}
               <Box display="flex" gap={2} flexWrap="wrap">
                 <Button
                   variant="contained"
@@ -1017,8 +965,6 @@ export default function Home() {
                   {t.watchDemo}
                 </Button>
               </Box>
-
-              {/* Trust badges */}
               <Box display="flex" gap={3} mt={4} flexWrap="wrap">
                 {[
                   { icon: <CheckCircle sx={{ fontSize: 16, color: '#4ade80' }} />, text: 'HIPAA Certified' },
@@ -1044,7 +990,6 @@ export default function Home() {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-                {/* Glow behind doctor */}
                 <Box sx={{
                   position: 'absolute',
                   width: '70%',
@@ -1055,7 +1000,6 @@ export default function Home() {
                   top: '15%',
                   left: '15%',
                 }} />
-                {/* Orbit rings */}
                 <Box sx={{
                   position: 'absolute', inset: 0,
                   border: '1px dashed rgba(255,255,255,0.07)',
@@ -1076,7 +1020,6 @@ export default function Home() {
             {/* RIGHT: Stats panel */}
             <Grid item xs={12} md={3}>
               <Box display="flex" flexDirection="column" gap={2.5}>
-                {/* Stats cards */}
                 {[
                   { label: 'Patients Served', value: '50,000+', icon: <Favorite sx={{ fontSize: 20 }} />, color: '#ef4444', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.2)' },
                   { label: 'Accuracy Rate', value: '99.2%', icon: <TrendingUp sx={{ fontSize: 20 }} />, color: '#60a5fa', bg: 'rgba(96,165,250,0.1)', border: 'rgba(96,165,250,0.2)' },
@@ -1116,8 +1059,6 @@ export default function Home() {
                     </Box>
                   </Box>
                 ))}
-
-                {/* Live indicator */}
                 <Box sx={{
                   bgcolor: 'rgba(74,222,128,0.08)',
                   border: '1px solid rgba(74,222,128,0.2)',
@@ -1304,7 +1245,6 @@ export default function Home() {
               overflow: 'hidden',
             }}
           >
-            {/* Background decoration */}
             <Box sx={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)' }} />
             <Box sx={{ position: 'absolute', bottom: -80, left: -80, width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(239,68,68,0.08) 0%, transparent 70%)' }} />
 
@@ -1486,7 +1426,7 @@ export default function Home() {
                 <Grid container spacing={2}>
                   {[
                     { title: '💧 Hydration Alert', desc: 'Drink 2 more glasses of water today to meet your daily goal.', tag: 'Daily Goal' },
-                    { title: '🏃 Activity Reminder', desc: 'You\'re 1,200 steps away from your daily target. Keep moving!', tag: 'Exercise' },
+                    { title: '🏃 Activity Reminder', desc: "You're 1,200 steps away from your daily target. Keep moving!", tag: 'Exercise' },
                     { title: '💊 Medication', desc: 'Evening medication reminder: Vitamin D3 & Omega-3.', tag: 'Health' },
                     { title: '😴 Sleep Quality', desc: 'Maintain 7-8 hours of sleep for optimal immune function.', tag: 'Wellness' },
                   ].map((tip, i) => (
@@ -1567,44 +1507,187 @@ export default function Home() {
       </Container>
 
       {/* FOOTER */}
-      <Box sx={{ bgcolor: '#0f1f5c', py: 4, mt: 4 }}>
+      <Box sx={{ bgcolor: '#0f1f5c', py: 6, mt: 4 }}>
         <Container maxWidth="xl">
-          <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
-            <Box display="flex" alignItems="center" gap={1.5}>
-              <Box sx={{ width: 36, height: 36, borderRadius: '10px', background: 'linear-gradient(135deg, #ef4444, #dc2626)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <HealthAndSafety sx={{ color: 'white', fontSize: 20 }} />
+          <Grid container spacing={4} mb={4}>
+            {/* Brand Column */}
+            <Grid item xs={12} md={4}>
+              <Box display="flex" alignItems="center" gap={1.5} mb={2}>
+                <Box sx={{ width: 36, height: 36, borderRadius: '10px', background: 'linear-gradient(135deg, #ef4444, #dc2626)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <HealthAndSafety sx={{ color: 'white', fontSize: 20 }} />
+                </Box>
+                <Typography variant="body1" fontWeight={700} sx={{ color: 'white' }}>SmartHealth AI</Typography>
               </Box>
-              <Typography variant="body1" fontWeight={700} sx={{ color: 'white' }}>SmartHealth AI</Typography>
-            </Box>
-            <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.4)' }}>
-              © 2025 SmartHealth AI. HIPAA Compliant · ISO 27001 Certified
-            </Typography>
-            <Box display="flex" gap={3}>
-              {['Privacy', 'Terms', 'Support'].map((link) => (
-                <Typography key={link} variant="caption" sx={{ color: 'rgba(255,255,255,0.4)', cursor: 'pointer', '&:hover': { color: '#93c5fd' } }}>
+              <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.8, mb: 3, maxWidth: 280 }}>
+                India's leading AI-powered healthcare platform. Transforming medical care with cutting-edge technology and compassionate service.
+              </Typography>
+              <Box display="flex" gap={1.5}>
+                {['HIPAA', 'ISO 27001', 'NHA'].map((cert) => (
+                  <Chip
+                    key={cert}
+                    label={cert}
+                    size="small"
+                    sx={{
+                      bgcolor: 'rgba(255,255,255,0.08)',
+                      color: 'rgba(255,255,255,0.6)',
+                      fontSize: '0.65rem',
+                      fontWeight: 600,
+                      border: '1px solid rgba(255,255,255,0.12)',
+                    }}
+                  />
+                ))}
+              </Box>
+            </Grid>
+
+            {/* Quick Links */}
+            <Grid item xs={6} md={2}>
+              <Typography variant="body2" fontWeight={700} sx={{ color: 'white', mb: 2, textTransform: 'uppercase', letterSpacing: 1, fontSize: '0.72rem' }}>
+                Platform
+              </Typography>
+              {['Symptom Checker', 'AI Chat', 'Appointments', 'Medical Records', 'Health Monitor'].map((link) => (
+                <Typography
+                  key={link}
+                  variant="body2"
+                  sx={{
+                    color: 'rgba(255,255,255,0.45)',
+                    mb: 1.2,
+                    cursor: 'pointer',
+                    fontSize: '0.82rem',
+                    transition: 'color 0.2s',
+                    '&:hover': { color: '#93c5fd' },
+                  }}
+                >
                   {link}
                 </Typography>
               ))}
+            </Grid>
+
+            {/* Company */}
+            <Grid item xs={6} md={2}>
+              <Typography variant="body2" fontWeight={700} sx={{ color: 'white', mb: 2, textTransform: 'uppercase', letterSpacing: 1, fontSize: '0.72rem' }}>
+                Company
+              </Typography>
+              {['About Us', 'Careers', 'Press', 'Blog', 'Contact'].map((link) => (
+                <Typography
+                  key={link}
+                  variant="body2"
+                  sx={{
+                    color: 'rgba(255,255,255,0.45)',
+                    mb: 1.2,
+                    cursor: 'pointer',
+                    fontSize: '0.82rem',
+                    transition: 'color 0.2s',
+                    '&:hover': { color: '#93c5fd' },
+                  }}
+                >
+                  {link}
+                </Typography>
+              ))}
+            </Grid>
+
+            {/* Support */}
+            <Grid item xs={6} md={2}>
+              <Typography variant="body2" fontWeight={700} sx={{ color: 'white', mb: 2, textTransform: 'uppercase', letterSpacing: 1, fontSize: '0.72rem' }}>
+                Support
+              </Typography>
+              {['Help Center', 'Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Accessibility'].map((link) => (
+                <Typography
+                  key={link}
+                  variant="body2"
+                  sx={{
+                    color: 'rgba(255,255,255,0.45)',
+                    mb: 1.2,
+                    cursor: 'pointer',
+                    fontSize: '0.82rem',
+                    transition: 'color 0.2s',
+                    '&:hover': { color: '#93c5fd' },
+                  }}
+                >
+                  {link}
+                </Typography>
+              ))}
+            </Grid>
+
+            {/* Emergency Contact */}
+            <Grid item xs={6} md={2}>
+              <Typography variant="body2" fontWeight={700} sx={{ color: 'white', mb: 2, textTransform: 'uppercase', letterSpacing: 1, fontSize: '0.72rem' }}>
+                Emergency
+              </Typography>
+              <Box sx={{ bgcolor: 'rgba(239,68,68,0.1)', borderRadius: '12px', p: 2, border: '1px solid rgba(239,68,68,0.2)' }}>
+                <Typography variant="body2" sx={{ color: '#fca5a5', fontWeight: 700, mb: 0.5 }}>
+                  🚨 Emergency
+                </Typography>
+                <Typography variant="h6" sx={{ color: '#ef4444', fontWeight: 900 }}>108</Typography>
+                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.7rem' }}>
+                  Ambulance Service
+                </Typography>
+              </Box>
+              <Box sx={{ bgcolor: 'rgba(29,78,216,0.1)', borderRadius: '12px', p: 2, border: '1px solid rgba(29,78,216,0.2)', mt: 1.5 }}>
+                <Typography variant="body2" sx={{ color: '#93c5fd', fontWeight: 700, mb: 0.5 }}>
+                  📞 Support
+                </Typography>
+                <Typography variant="body1" sx={{ color: '#60a5fa', fontWeight: 800 }}>1800-XXX</Typography>
+                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.7rem' }}>
+                  24/7 Helpline
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+
+          {/* Footer Bottom */}
+          <Box sx={{ borderTop: '1px solid rgba(255,255,255,0.08)', pt: 3 }}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
+              <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.75rem' }}>
+                © {new Date().getFullYear()} SmartHealth AI. All rights reserved. Made with ❤️ in India.
+              </Typography>
+              <Box display="flex" gap={2}>
+                {['Privacy', 'Terms', 'Cookies'].map((item) => (
+                  <Typography
+                    key={item}
+                    variant="caption"
+                    sx={{
+                      color: 'rgba(255,255,255,0.35)',
+                      cursor: 'pointer',
+                      fontSize: '0.75rem',
+                      '&:hover': { color: 'rgba(255,255,255,0.7)' },
+                      transition: 'color 0.2s',
+                    }}
+                  >
+                    {item}
+                  </Typography>
+                ))}
+              </Box>
             </Box>
           </Box>
         </Container>
       </Box>
 
-      {/* Scroll to top button */}
+      {/* SCROLL TO TOP BUTTON */}
       {showScrollTop && (
         <Box
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={scrollToTop}
           sx={{
-            position: 'fixed', bottom: 30, right: 30, zIndex: 1000,
-            width: 48, height: 48, borderRadius: '14px',
-            background: 'linear-gradient(135deg, #1d4ed8, #1e40af)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', boxShadow: '0 8px 25px rgba(29,78,216,0.4)',
+            position: 'fixed',
+            bottom: 32,
+            right: 32,
+            width: 48,
+            height: 48,
+            borderRadius: '14px',
+            background: 'linear-gradient(135deg, #1d4ed8, #2563eb)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 8px 25px rgba(29,78,216,0.4)',
+            zIndex: 1000,
             transition: 'all 0.3s',
-            '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 12px 35px rgba(29,78,216,0.5)' },
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: '0 12px 35px rgba(29,78,216,0.5)',
+            },
           }}
         >
-          <KeyboardArrowUp sx={{ color: 'white', fontSize: 26 }} />
+          <KeyboardArrowUp sx={{ color: 'white', fontSize: 28 }} />
         </Box>
       )}
     </Box>

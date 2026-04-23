@@ -1,99 +1,125 @@
 'use client';
 
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import apiService from '../services/api';
-
-interface User {
-  userId: string;
-  email: string;
-  name: string;
-  phone?: string;
-}
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { authAPI, User } from '../services/api';
 
 interface AuthContextType {
   user: User | null;
-  token: string | null;
   isLoading: boolean;
+  error: string | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (data: { email: string; password: string; name: string; phone?: string }) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
   logout: () => void;
-  updateUser: (user: User) => void;
+  updateUser: (data: Partial<User>) => Promise<void>;
+  clearError: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+  age: number;
+  gender: string;
+  phone: string;
+}
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+  return ctx;
+};
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // ── Restore session ──────────────────────────────────────
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedToken = localStorage.getItem('authToken');
-      const storedUser = localStorage.getItem('user');
-      if (storedToken && storedUser) {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
+    const restoreSession = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) { setIsLoading(false); return; }
+      try {
+        const profile = await authAPI.getProfile();
+        setUser(profile);
+      } catch {
+        localStorage.removeItem('token');
+      } finally {
+        setIsLoading(false);
       }
+    };
+    restoreSession();
+  }, []);
+
+  // ── Login ────────────────────────────────────────────────
+  const login = useCallback(async (email: string, password: string) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const { token, user: userData } = await authAPI.login(email, password);
+      localStorage.setItem('token', token);
+      setUser(userData);
+      router.push('/');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Login failed';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  // ── Register ─────────────────────────────────────────────
+  const register = useCallback(async (data: RegisterData) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const { token, user: userData } = await authAPI.register(data);
+      localStorage.setItem('token', token);
+      setUser(userData);
+      router.push('/');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Registration failed';
+      setError(message);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  // ── Logout ───────────────────────────────────────────────
+  const logout = useCallback(() => {
+    localStorage.removeItem('token');
+    setUser(null);
+    router.push('/login');
+  }, [router]);
+
+  // ── Update profile ───────────────────────────────────────
+  const updateUser = useCallback(async (data: Partial<User>) => {
+    setIsLoading(true);
+    try {
+      const updated = await authAPI.updateProfile(data);
+      setUser(updated);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Update failed';
+      setError(message);
+      throw err;
+    } finally {
       setIsLoading(false);
     }
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const response = await apiService.login(email, password);
-    if (response.success) {
-      const { user, token } = response.data;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('user', JSON.stringify(user));
-      }
-      setToken(token);
-      setUser(user);
-    } else {
-      throw new Error(response.error?.message || 'Login failed');
-    }
-  };
-
-  const register = async (data: { email: string; password: string; name: string; phone?: string }) => {
-    const response = await apiService.register(data);
-    if (response.success) {
-      const { user, token } = response.data;
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('user', JSON.stringify(user));
-      }
-      setToken(token);
-      setUser(user);
-    } else {
-      throw new Error(response.error?.message || 'Registration failed');
-    }
-  };
-
-  const logout = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('user');
-    }
-    setToken(null);
-    setUser(null);
-  };
-
-  const updateUser = (updatedUser: User) => {
-    setUser(updatedUser);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-    }
-  };
+  const clearError = useCallback(() => setError(null), []);
 
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, updateUser }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, error, login, register, logout, updateUser, clearError }}
+    >
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth must be used within AuthProvider');
-  return context;
 };

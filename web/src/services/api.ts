@@ -1,221 +1,262 @@
-import axios, { AxiosInstance } from 'axios';
+// ============================================================
+// SmartHealth AI — Centralized API Service Layer
+// All backend communication goes through this file.
+// Set NEXT_PUBLIC_API_BASE_URL in .env.local to your
+// deployed API Gateway URL (e.g. https://xyz.execute-api.ap-south-1.amazonaws.com/prod)
+// ============================================================
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://your-api-gateway-url.amazonaws.com/dev';
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
 
-class ApiService {
-  private api: AxiosInstance;
-  private useMock: boolean;
+// ─── Generic fetch wrapper ───────────────────────────────────
+async function apiFetch<T>(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<T> {
+  const token =
+    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-  constructor() {
-    this.useMock = !process.env.NEXT_PUBLIC_API_URL || 
-                   process.env.NEXT_PUBLIC_API_URL.includes('your-api-gateway') ||
-                   API_URL.includes('your-api-gateway');
-    
-    console.log('API Service initialized - Mock mode:', this.useMock);
-    
-    this.api = axios.create({
-      baseURL: API_URL,
-      timeout: 30000,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  const res = await fetch(`${BASE_URL}${endpoint}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers,
+    },
+  });
 
-    this.api.interceptors.request.use((config) => {
-      if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('authToken');
-        if (token) config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    });
-
-    this.api.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response?.status === 401 && typeof window !== 'undefined') {
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('user');
-          window.location.href = '/login';
-        }
-        return Promise.reject(error);
-      }
-    );
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ message: res.statusText }));
+    throw new Error(err.message || 'API request failed');
   }
-
-  private mockDelay = () => new Promise(resolve => setTimeout(resolve, 800));
-
-  async register(data: any) {
-    if (this.useMock) {
-      await this.mockDelay();
-      const mockUser = {
-        userId: `mock-user-${Date.now()}`,
-        email: data.email,
-        name: data.name,
-        phone: data.phone || '',
-      };
-      const mockToken = 'mock-jwt-token-' + Math.random().toString(36).substring(7);
-      return { success: true, data: { user: mockUser, token: mockToken } };
-    }
-    return (await this.api.post('/auth/register', data)).data;
-  }
-
-  async login(email: string, password: string) {
-    if (this.useMock) {
-      await this.mockDelay();
-      if (email && password) {
-        const mockUser = {
-          userId: 'mock-user-123',
-          email: email,
-          name: email.split('@')[0],
-          phone: '+1234567890',
-        };
-        const mockToken = 'mock-jwt-token-' + Math.random().toString(36).substring(7);
-        return { success: true, data: { user: mockUser, token: mockToken } };
-      }
-      throw new Error('Invalid credentials');
-    }
-    return (await this.api.post('/auth/login', { email, password })).data;
-  }
-
-  async getProfile() {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { user: JSON.parse(localStorage.getItem('user') || '{}') } };
-    }
-    return (await this.api.get('/user/profile')).data;
-  }
-
-  async updateProfile(data: any) {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { user: data } };
-    }
-    return (await this.api.put('/user/profile', data)).data;
-  }
-
-  async analyzeSymptoms(data: { symptoms: any[] }) {
-    if (this.useMock) {
-      await this.mockDelay();
-      return {
-        success: true,
-        data: {
-          predictionId: `mock-prediction-${Date.now()}`,
-          predictions: [
-            {
-              disease: 'Common Cold',
-              confidence: 0.85,
-              description: 'A viral infection of the upper respiratory tract',
-              recommendations: [
-                'Get plenty of rest',
-                'Stay hydrated with water and warm fluids',
-                'Use over-the-counter cold medications if needed',
-                'Gargle with salt water for sore throat',
-              ],
-              severity: 'low',
-            },
-            {
-              disease: 'Influenza (Flu)',
-              confidence: 0.62,
-              description: 'A contagious respiratory illness caused by influenza viruses',
-              recommendations: [
-                'Rest at home and avoid contact with others',
-                'Drink plenty of fluids',
-                'Consider antiviral medication within 48 hours',
-                'Monitor for complications',
-              ],
-              severity: 'medium',
-            },
-            {
-              disease: 'Allergic Rhinitis',
-              confidence: 0.45,
-              description: 'Inflammation of the nasal airways due to allergens',
-              recommendations: [
-                'Identify and avoid allergens',
-                'Use antihistamines as directed',
-                'Keep windows closed during high pollen',
-                'Consider allergy testing',
-              ],
-              severity: 'low',
-            },
-          ],
-        },
-      };
-    }
-    return (await this.api.post('/prediction/analyze', data)).data;
-  }
-
-  async getPredictionHistory() {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { predictions: [] } };
-    }
-    return (await this.api.get('/prediction/history')).data;
-  }
-
-  async sendMessage(data: any) {
-    if (this.useMock) {
-      await this.mockDelay();
-      return {
-        success: true,
-        data: {
-          chatId: 'mock-chat-123',
-          userMessage: { id: '1', sender: 'user', content: data.message },
-          aiMessage: {
-            id: '2',
-            sender: 'ai',
-            content: 'This is a mock AI response.',
-          },
-        },
-      };
-    }
-    return (await this.api.post('/chat/message', data)).data;
-  }
-
-  async getChatHistory(chatId: string) {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { chat: { messages: [] } } };
-    }
-    return (await this.api.get(`/chat/${chatId}`)).data;
-  }
-
-  async listChats() {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { chats: [] } };
-    }
-    return (await this.api.get('/chat')).data;
-  }
-
-  async uploadRecord(data: any) {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { record: data } };
-    }
-    return (await this.api.post('/records/upload', data)).data;
-  }
-
-  async getRecords(type?: string) {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { records: [] } };
-    }
-    return (await this.api.get('/records', { params: { type } })).data;
-  }
-
-  async createAppointment(data: any) {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { appointment: data } };
-    }
-    return (await this.api.post('/appointments', data)).data;
-  }
-
-  async listAppointments(filter?: string, status?: string) {
-    if (this.useMock) {
-      await this.mockDelay();
-      return { success: true, data: { appointments: [] } };
-    }
-    return (await this.api.get('/appointments', { params: { filter, status } })).data;
-  }
+  return res.json();
 }
 
-export default new ApiService();
+// ─── Auth ────────────────────────────────────────────────────
+export const authAPI = {
+  login: (email: string, password: string) =>
+    apiFetch<{ token: string; user: User }>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    }),
+
+  register: (data: RegisterPayload) =>
+    apiFetch<{ token: string; user: User }>('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  getProfile: () => apiFetch<User>('/auth/profile'),
+
+  updateProfile: (data: Partial<User>) =>
+    apiFetch<User>('/auth/profile', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+};
+
+// ─── Symptom Checker ─────────────────────────────────────────
+export const symptomAPI = {
+  analyzeSymptoms: (symptoms: string[], age: number, gender: string) =>
+    apiFetch<SymptomResult>('/symptoms/analyze', {
+      method: 'POST',
+      body: JSON.stringify({ symptoms, age, gender }),
+    }),
+
+  getSymptomsList: () => apiFetch<string[]>('/symptoms/list'),
+
+  getPredictionHistory: () => apiFetch<PredictionRecord[]>('/symptoms/history'),
+};
+
+// ─── Chat ────────────────────────────────────────────────────
+export const chatAPI = {
+  sendMessage: (messages: ChatMessage[], language = 'en') =>
+    apiFetch<{ reply: string; sessionId: string }>('/chat/message', {
+      method: 'POST',
+      body: JSON.stringify({ messages, language }),
+    }),
+
+  getChatHistory: () => apiFetch<ChatSession[]>('/chat/history'),
+
+  clearHistory: (sessionId: string) =>
+    apiFetch<{ success: boolean }>(`/chat/history/${sessionId}`, {
+      method: 'DELETE',
+    }),
+};
+
+// ─── Appointments ────────────────────────────────────────────
+export const appointmentAPI = {
+  bookAppointment: (data: AppointmentPayload) =>
+    apiFetch<Appointment>('/appointments/book', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  getAppointments: () => apiFetch<Appointment[]>('/appointments'),
+
+  cancelAppointment: (id: string) =>
+    apiFetch<{ success: boolean }>(`/appointments/${id}`, {
+      method: 'DELETE',
+    }),
+
+  getDoctors: (specialty?: string) =>
+    apiFetch<Doctor[]>(`/appointments/doctors${specialty ? `?specialty=${specialty}` : ''}`),
+
+  bookVideoConsult: (data: ConsultPayload) =>
+    apiFetch<{ meetingUrl: string; appointment: Appointment }>('/appointments/video', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  bookPhoneConsult: (data: ConsultPayload) =>
+    apiFetch<{ phone: string; appointment: Appointment }>('/appointments/phone', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+};
+
+// ─── Medical Records ─────────────────────────────────────────
+export const recordsAPI = {
+  getRecords: () => apiFetch<MedicalRecord[]>('/records'),
+
+  uploadRecord: (formData: FormData) =>
+    fetch(`${BASE_URL}/records/upload`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: formData,
+    }).then((r) => r.json()),
+
+  deleteRecord: (id: string) =>
+    apiFetch<{ success: boolean }>(`/records/${id}`, { method: 'DELETE' }),
+
+  getRecord: (id: string) => apiFetch<MedicalRecord>(`/records/${id}`),
+};
+
+// ─── Health Monitor ──────────────────────────────────────────
+export const monitorAPI = {
+  saveVitals: (vitals: VitalsPayload) =>
+    apiFetch<Vitals>('/monitor/vitals', {
+      method: 'POST',
+      body: JSON.stringify(vitals),
+    }),
+
+  getVitalsHistory: () => apiFetch<Vitals[]>('/monitor/vitals/history'),
+
+  getLatestVitals: () => apiFetch<Vitals>('/monitor/vitals/latest'),
+};
+
+// ─── Types ───────────────────────────────────────────────────
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  age?: number;
+  gender?: string;
+  phone?: string;
+  bloodGroup?: string;
+  allergies?: string[];
+  avatar?: string;
+}
+
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  age: number;
+  gender: string;
+  phone: string;
+}
+
+export interface SymptomResult {
+  predictions: Array<{
+    disease: string;
+    probability: number;
+    severity: 'low' | 'medium' | 'high';
+    description: string;
+    recommendations: string[];
+    specialistType: string;
+  }>;
+  disclaimer: string;
+  sessionId: string;
+}
+
+export interface PredictionRecord {
+  id: string;
+  symptoms: string[];
+  predictions: SymptomResult['predictions'];
+  createdAt: string;
+}
+
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface ChatSession {
+  id: string;
+  messages: ChatMessage[];
+  createdAt: string;
+  title: string;
+}
+
+export interface AppointmentPayload {
+  doctorId: string;
+  type: 'video' | 'phone' | 'in-person';
+  date: string;
+  time: string;
+  reason: string;
+  notes?: string;
+}
+
+export interface Appointment {
+  id: string;
+  doctor: Doctor;
+  type: string;
+  date: string;
+  time: string;
+  reason: string;
+  status: 'upcoming' | 'completed' | 'cancelled';
+  meetingUrl?: string;
+}
+
+export interface ConsultPayload {
+  doctorId: string;
+  preferredTime: string;
+  reason: string;
+}
+
+export interface Doctor {
+  id: string;
+  name: string;
+  specialty: string;
+  rating: number;
+  experience: string;
+  avatar?: string;
+  available: boolean;
+  fee: number;
+}
+
+export interface MedicalRecord {
+  id: string;
+  title: string;
+  type: string;
+  date: string;
+  fileUrl?: string;
+  notes?: string;
+  doctor?: string;
+}
+
+export interface VitalsPayload {
+  heartRate?: number;
+  bloodPressureSystolic?: number;
+  bloodPressureDiastolic?: number;
+  temperature?: number;
+  oxygenSaturation?: number;
+  weight?: number;
+}
+
+export interface Vitals extends VitalsPayload {
+  id: string;
+  recordedAt: string;
+}
